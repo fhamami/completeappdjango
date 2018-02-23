@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	{% for category in categories %}
+		<h2>{{ category.name }}</h2>
+		{% for item in category.item.set.all %}
+			<a href="{% url 'item' item_id=item.id %}">{{ item.name }}</a>
+		{% endfor %}
+	{% endfor %}
+</body>
+</html>

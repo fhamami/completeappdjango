@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	{% if item != None %}
+		<h2>{{ item.name }}</h2>
+		<h4>{{ item.category.name }}</h4>
+		<p>{{ item.description }}</p>
+	{% else %}
+		<p>Invalid item ID.</p>
+	{% endif %}
+</body>
+</html>

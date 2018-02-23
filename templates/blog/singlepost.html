@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Complete Blog {{ version }}: {{ post.title }}
+{% endblock %}
+
+{% block header1 %}
+  <a href="/blog/">Complete Blog {{ version }}</a>
+{% endblock %}
+
+{# to fix IE #}
+{% block header2 %}{% endblock %}
+
+{% block main %}
+    <h3>{{ post.title }}</h3>
+    {{ post.body }}
+    <hr>
+    <div class="post_footer">
+      {% ifnotequal post.date_mofidified.date post.date_created.date %}
+        Last modified: {{ post.date_modified.date }}<br>
+      {% endifnotequal %}
+      Date created: {{ post.date_created.date }}<br>
+      Tags:
+      {% for tag in post.get_tag_list %}
+        <a href="/blog/tag/{{ tag }}/">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </div>
+    <br>
+{% endblock %}
