@@ -1,8 +1,8 @@
 from django.db import models
 
 STATUS_APP = (
-    ('OnGoing' ,'On-Going'),
-    ('Finish', 'Finish'),
+    (0 ,'On-Going'),
+    (1, 'Finish'),
 )
 
 class Home(models.Model):

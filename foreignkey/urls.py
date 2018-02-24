@@ -9,5 +9,5 @@ from .views import items, categories
 urlpatterns = [
     # url(r'^login/$', views.user_login, name='login'),
     path('item/', items, name='itemsFK'),
-    path('', categories),
+    path('category/', categories),
 ]

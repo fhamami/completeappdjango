@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Home
+
+def home(request):
+    context = {
+        'linklist': Home.objects.all()
+    }
+    return render(request, 'homepage/linklist.html', context)
