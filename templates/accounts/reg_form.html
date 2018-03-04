@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <main role="main">
+    <section class="jumbotron  ">
+      <div class="container">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+  </main>
+{% endblock %} 

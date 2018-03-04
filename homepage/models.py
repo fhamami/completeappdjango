@@ -5,9 +5,10 @@ STATUS_APP = (
     (1, 'Finish'),
 )
 
+# app name
 class Home(models.Model):
     class Meta:
-        verbose_name_plural = 'home'
+        verbose_name_plural = 'App Name'
 
     url = models.CharField(max_length=50)
     title = models.CharField(max_length=200)
@@ -17,3 +18,10 @@ class Home(models.Model):
 
     def __str__(self):
         return self.title
+
+# app wiki
+# class WikiApp(models.Model):
+#     class Meta:
+#         verbose_name_plural = 'App Wiki'
+
+    

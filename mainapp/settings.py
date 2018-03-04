@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'foreignkey',
     'debug_toolbar',
+    'foreignkey',
     'blog',
-    'homepage'
+    'homepage',
+    'accounts',
+    'django.contrib.sites',
+    'django.contrib.redirects',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    # 'mainapp.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'mainapp.urls'
@@ -129,3 +134,22 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+LOGIN_REDIRECT_URL = '/accounts/'
+LOGIN_URL = '/accounts/login/'
+
+LOGIN_EXEMPT_URLS = (
+    '',
+    'admin/',
+    'accounts/logout/',
+    'accounts/register/',
+    # 'accounts/reset-password/',
+    # '/reset-password/done/',
+    # '/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>,+)/',
+    # '/reset-password/complete/'
+)
+
+SITE_ID = 1
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025

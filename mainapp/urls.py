@@ -17,18 +17,20 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
-
-# from blog.views import singlepost, yearview, monthview, tagview
+from homepage.views import login_redirect
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^', include('foreignkey.urls')),
-    url(r'^', include('blog.urls')),
-    path('', include('homepage.urls'))
-]
+    path('', include('foreignkey.urls')),
+    path('', include('blog.urls')),
+    path('', include('homepage.urls')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('', login_redirect, name='login_redirect')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
+if settings.DEBUG:  
     import debug_toolbar
     urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
