@@ -11,8 +11,16 @@ Django 2.0
 list apps
 - foreignapp
 - blog
+- homepage
+    - friends
+- accounts
 
 ### blog
+
+## Accounts
+
+send email
+python -m smtpd -n -c DebuggingServer localhost:1025
 
 - https://www.saltycrane.com/blog/2008/06/django-blog-project-6-creating-standard/
 

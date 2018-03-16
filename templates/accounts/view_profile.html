@@ -15,7 +15,10 @@
       <p>Phone : {{ user.userprofile.phone }}</p>
       <p>City : {{ user.userprofile.city }}</p>
       <p>Website : {{ user.userprofile.website }}</p>
-      <img src="{{ user.userprofile.image.url }}" width="240">
+      {% if user.userprofile.image %}
+        {# Prevent E: The 'image' attribute has no file associated with it. it because user doesn't have image #}
+        <img src="{{ user.userprofile.image.url }}" width="240">
+      {% endif %}
     </div>
   </section>
 </main>

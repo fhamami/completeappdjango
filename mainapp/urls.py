@@ -13,24 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
-from homepage.views import login_redirect
+from accounts.views import login_redirect
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('foreignkey.urls')),
     path('', include('blog.urls')),
-    path('', include('homepage.urls')),
+    path('', include('homepage.urls', namespace='homepage')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('', login_redirect, name='login_redirect')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:  
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+
+# if settings.DEBUG:  
+#     import debug_toolbar
+#     urlpatterns = [
+#         path('__debug__/', include(debug_toolbar.urls)),
+#     ] + urlpatterns

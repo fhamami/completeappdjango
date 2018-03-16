@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Home
+from .models import Home, Post, Friend
 
-class HomepageAdmin(admin.ModelAdmin):
-	pass
-
-admin.site.register(Home, HomepageAdmin)
+admin.site.register(Home)
+admin.site.register(Post)
+admin.site.register(Friend)
