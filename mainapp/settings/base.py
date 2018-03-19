@@ -109,7 +109,6 @@ LOGIN_REDIRECT_URL = '/accounts/'
 LOGIN_URL = '/accounts/login/'
 
 LOGIN_EXEMPT_URLS = (
-    '',
     'admin/',
     'accounts/logout/',
     'accounts/register/',

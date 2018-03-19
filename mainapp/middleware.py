@@ -9,6 +9,7 @@ EXEMPT_URLS = [re.compile(settings.LOGIN_URL.lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
     EXEMPT_URLS += [re.compile(url) for url in settings.LOGIN_EXEMPT_URLS]
 
+
 class LoginRequiredMiddleware:
 
     def __init__(self, get_response):

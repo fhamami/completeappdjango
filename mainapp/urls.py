@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('foreignkey.urls')),
-    path('', include('blog.urls')),
     path('', include('homepage.urls', namespace='homepage')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
-    path('', login_redirect, name='login_redirect')
+    path('', login_redirect, name='login_redirect'),
+    path('foreignkey/', include('foreignkey.urls')),
+    path('blog/', include('blog.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

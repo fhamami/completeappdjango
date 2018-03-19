@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     description = models.CharField(max_length=100, null=True, blank=True) # default it will be empty
     city = models.CharField(max_length=100, null=True, blank=True)
     website = models.URLField(null=True, blank=True)
-    phone = models.IntegerField(default=0) # IntegerField can't leave with empty string, becauce type conflict
+    phone = models.IntegerField(default=0) # IntegerField can't leave with empty string, because type conflict
     image = models.ImageField(upload_to='profile_image', blank=True)
 
     def __str__(self):

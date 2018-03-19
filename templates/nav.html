@@ -4,7 +4,7 @@
     <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Complete App </a></h5>
     {% if user.is_authenticated %}
     <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="{% url 'homepage:linklist_view' %}">Linklist</a>
+      <a class="p-2 text-dark" href="{% url 'homepage:home' %}">User Posts</a>
       <a class="p-2 text-dark" href="{% url 'accounts:view_profile' %}">profile</a>
       <a class="p-2 text-dark" href="{% url 'accounts:edit_profile' %}">edit profile</a>
       <a class="p-2 text-dark" href="{% url 'accounts:change_password' %}">edit password</a>
@@ -12,7 +12,6 @@
     <a class="btn btn-outline-primary" href="{% url 'accounts:logout' %}">logout</a>
     {% else %}
     <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'homepage:linklist_view' %}">Linklist</a>
         <a class="p-2 text-dark" href="{% url 'accounts:register' %}">Register</a>
         <a class="p-2 text-dark" href="{% url 'accounts:reset_password' %}">Reset Password</a>
       </nav>
