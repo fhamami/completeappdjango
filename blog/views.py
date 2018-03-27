@@ -1,97 +1,27 @@
-import re
-from django.shortcuts import render
-from datetime import datetime
-from .models import Post
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, get_object_or_404
 
-MONTH_NAMES = ('', 'January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
+from .models import BlogPost
 
-def frontpage(request):
-    post, pagedata = init()
-    pagedata.update({'subtitle': '',})
-    return render('blog/listpage.html', pagedata)
 
-def singlepost(request, year, month, slug2):
-    posts, pagedata = init()
-    post = posts.get(
-                    date_created__year=year,
-                    date_created__month=int(month),
-                    slug=slug2,)
-    pagedata.update({'post': post})
-    return render('blog/singlepost.html', pagedata)
+def post_list_view(request):
+    list_objects = BlogPost.published.all()
+    paginator = Paginator(list_objects, 3)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/postlist.html', {'posts': posts})
 
-def yearview(request, year):
-    posts, pagedata = init()
-    posts = posts.filter(date_created__year=year)
-    pagedata.update({'post_list': posts,
-                    'subtitle': 'Posts for %s' % year})
 
-def monthview(request, year, month):
-    posts, pagedata = init()
-    posts = posts.filter(date_created__year=year)
-    posts = posts.filter(date_created__month=int(month))
-    pagedata.update({'post_list': posts,
-                    'subtitle': 'Posts for %s %s' % (MONTH_NAMES[int(month)], year),})
-    return render('blog/listpage.html', pagedata)
-
-def tagview(request, tag):
-    allposts, pagedata = init()
-    posts = []
-    for post in allposts:
-        tags = re.split('', post.tags)
-    if tag in tags:
-        posts.append(post)
-        pagedata.update({'post_list': posts,
-                        'subtitle': "Posts tagged '%s'" % tag,})
-    return render('blog/listpage.html', pagedata)
-
-def init():
-    posts = Post.objects.all()
-    tag_data = create_tag_data(posts)
-    archieve_data = create_archieve_data(posts)
-    pagedata = {'version': '0.0.1',
-                'post_list': posts,
-                'tag_counts': tag_data,
-                'archieve_counts': archieve_data,}
-    return posts, pagedata
-
-def create_archieve_data(posts):
-    archieve_data = []
-    count = {}
-    mcount = {}
-    for post in posts:
-        year = post.date_created.year
-        month = post.date_created.month
-        if year not in count:
-            count[year] = 1
-            mcount[year] = {}
-        else:
-            count[year] += 1
-        if month not in mcount[year]:
-            mcount[year][month] = 1
-        else:
-            mcount[year][month] += 1
-    for year in sorted(count.interkeys(), reverse=True):
-        archieve_data.append({'isyear': True,
-                            'year': year,
-                            'count': count[year],})
-        for month in sorted(mcount[year].iterkeys(), reverse=True):
-            archieve_data.append({'isyear': False,
-                                'yearmonth': '%d/%02d' % (year, month),
-                                'monthname': MONTH_NAMES[month],
-                                'count': mcount[year][month],})
-    return archieve_data
-
-# def crate_tag_data(posts):
-#     tag_data = []
-#     count = {}
-#     for post in posts:
-#         tags = re.split("", post.tags)
-#     for tag in tags:
-#         if tag not in count:
-#             count[tag] = 1
-#         else:
-#             count[tag] += 1
-#     for tag, count in sorted(count.iteritems(), key=lambda(k, v): (v, k), reverse=True):
-#         tag_data.append({'tag': tag,
-#                         'count': count,})
-#     return tag_data
+def post_detail_view(request, year, month, day, post):
+    post = get_object_or_404(BlogPost,
+                             slug=post,
+                             status='published',
+                             publish__year=year,
+                             publish__month=month,
+                             publish__day=day)
+    return render(request, 'blog/details.html', {'post': post})

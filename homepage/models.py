@@ -45,6 +45,9 @@ class Friend(models.Model):
     current_user = models.ForeignKey(User, related_name='owner',
                                      null=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.current_user)
+
     # make friend methods
     @classmethod
     def make_friend(cls, current_user, new_friend):
