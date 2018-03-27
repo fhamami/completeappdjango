@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from accounts.views import login_redirect
 from django.conf.urls.static import static
@@ -27,6 +27,7 @@ urlpatterns = [
     path('', login_redirect, name='login_redirect'),
     path('foreignkey/', include('foreignkey.urls')),
     path('blog/', include('blog.urls', namespace='blog')),
+    re_path('api/blog/', include('blog.api.urls', namespace='blog_api')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

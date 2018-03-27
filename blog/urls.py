@@ -1,6 +1,6 @@
 # from django.conf.urls import url
 # from django.contrib.auth import views
-from django.urls import path
+from django.urls import path, include
 from blog.views import (
     # post_list,
     # post_create,
@@ -20,7 +20,8 @@ urlpatterns = [
     path('', post_list_view, name='post_list_view'),
     path('(<year>\d{4})/(<month>\d{2})/(<day>\d{2})/(<post>[-\w]+)/',
          post_detail_view, name='post_detail_view'),
-    path('feed/', BlogPostFeed(), name='post_feed')
+    path('feed/', BlogPostFeed(), name='post_feed'),
+    # path('foreignkey/', include('foreignkey.urls')),
     # path('create/', post_create, name='createpost'),
     # Django Code Review #3 on joincfe.com/youtube/
     # path('(<slug>[\w-]+)/', PostDetailView.as_view(), name='detail'),
