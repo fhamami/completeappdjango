@@ -11,6 +11,7 @@ from blog.views import (
     post_list_view,
     post_detail_view
 )
+from .feeds import BlogPostFeed
 # singlepost, yearview, monthview, tagview, frontpage
 
 app_name = 'blog'
@@ -19,6 +20,7 @@ urlpatterns = [
     path('', post_list_view, name='post_list_view'),
     path('(<year>\d{4})/(<month>\d{2})/(<day>\d{2})/(<post>[-\w]+)/',
          post_detail_view, name='post_detail_view'),
+    path('feed/', BlogPostFeed(), name='post_feed')
     # path('create/', post_create, name='createpost'),
     # Django Code Review #3 on joincfe.com/youtube/
     # path('(<slug>[\w-]+)/', PostDetailView.as_view(), name='detail'),
