@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container pt-md-5 border-top">
+
+  <div class="row">
+      <div class="col-6 col-md">
+        <h3>{{ post.title }}</h3>
+        <p class="small">Published {{ post.publish }} by {{ auth.author }}</p>
+        <p>{{ post.body | linebreaks }}</p>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Complete Blog {{ version }}: {{ post.title }}
+{% endblock %}
+
+{% block header1 %}
+  <a href="/blog/">Complete Blog {{ version }}</a>
+{% endblock %}
+
+{# to fix IE #}
+{% block header2 %}{% endblock %}
+
+{% block main %}
+    <h1>{{ title }}</h1>
+
+    <h2>{{ instance.title }}</h2>
+    <h2>{{ instance.slug }}</h2>
+    <h2>{{ instance.date_created }}</h2>
+    <h2>{{ instance.date_modified }}</h2>
+    <h2>{{ instance.tags }}</h2>
+    <p>{{ instance.body }}</p>
+{% endblock %}

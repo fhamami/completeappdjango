@@ -6,6 +6,10 @@ Python 3.5
 
 Django 2.0
 
+## Setting file
+
+- https://medium.com/@ayarshabeer/django-best-practice-settings-file-for-multiple-environments-6d71c6966ee2
+
 ## APPs
 
 list apps
@@ -17,7 +21,10 @@ list apps
 
 ### blog
 
-## Accounts
+- https://github.com/codingforentrepreneurs/try-django-19/
+- http://muva.co.ke/blog/building-a-blog-application-with-python-3-5-and-django-1-11-4-web-framework/
+
+### Accounts
 
 send email
 python -m smtpd -n -c DebuggingServer localhost:1025

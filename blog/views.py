@@ -1,108 +1,149 @@
-import re
-from django.shortcuts import render
-from datetime import datetime
-from .models import Post
+from urllib.parse import quote_plus
+from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+from django.views.generic import DetailView
 
-MONTH_NAMES = ('', 'January', 'Feburary', 'March', 'April',
-               'May', 'June', 'July', 'August', 'September',
-               'October', 'November', 'December')
-
-
-def frontpage(request):
-    post, pagedata = init()
-    pagedata.update({'subtitle': '', })
-    return render('blog/listpage.html', pagedata)
+from .forms import PostForm
+from .models import BlogPost
 
 
-def singlepost(request, year, month, slug2):
-    posts, pagedata = init()
-    post = posts.get(
-                    date_created__year=year,
-                    date_created__month=int(month),
-                    slug=slug2,)
-    pagedata.update({'post': post})
-    return render('blog/singlepost.html', pagedata)
+def post_create(request):
+    # user should can create post from this
+    # if not request.user.is_staff or not request.user.is_superuser:
+    #     raise Http404
+
+    form = PostForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        # message success
+        messages.success(request, "Successfully Created")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form": form,
+    }
+    return render(request, 'blog/post_form.html', context)
 
 
-def yearview(request, year):
-    posts, pagedata = init()
-    posts = posts.filter(date_created__year=year)
-    pagedata.update({'post_list': posts,
-                    'subtitle': 'Posts for %s' % year})
+# Created for django code review
+# class PostDetailView(DetailView):
+#     template_name = "post_detail.html"
+
+#     def get_object(self, *args, **kwargs):
+#         slug = self.kwargs.get("slug")
+#         instance = get_object_or_404(BlogPost, slug=slug)
+#         if instance.publish > timezone.now().date() or instance.draft:
+#             if not request.user.is_staff or not request.user.is_superuser:
+#                 raise Http404
+#         return instance
+
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
+#         instance = context['object']
+#         context['share_string'] = quote_plus(instance.content)
+#         return context
 
 
-def monthview(request, year, month):
-    posts, pagedata = init()
-    posts = posts.filter(date_created__year=year)
-    posts = posts.filter(date_created__month=int(month))
-    pagedata.update({
-        'post_list': posts,
-        'subtitle': 'Posts for %s %s' % (MONTH_NAMES[int(month)], year), })
-    return render('blog/listpage.html', pagedata)
+def post_detail(request, slug=None):
+    instance = get_object_or_404(BlogPost, slug=id)
+    if instance.publish > timezone.now().date() or instance.draft:
+        if not request.user.is_staff or not request.user.is_superuser:
+            raise Http404
+    share_string = quote_plus(instance.content)
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "share_string": share_string,
+    }
+    return render('blog/post_detail.html', context)
 
 
-def tagview(request, tag):
-    allposts, pagedata = init()
-    posts = []
-    for post in allposts:
-        tags = re.split('', post.tags)
-    if tag in tags:
-        posts.append(post)
-        pagedata.update({'post_list': posts,
-                        'subtitle': "Posts tagged '%s'" % tag, })
-    return render('blog/listpage.html', pagedata)
+def post_list(request):
+    today = timezone.now().date()
+    queryset_list = BlogPost.objects.active()
+    if request.user.is_staff or request.user.is_superuser:
+        queryset_list = BlogPost.objects.all()
+
+    query = request.GET.get("q")
+    if query:
+        queryset_list = queryset_list.filter(
+            # __icontains
+            # https://docs.djangoproject.com/en/2.0/topics/db/queries/#querysets-are-lazy
+            # https://stackoverflow.com/questions/2571149/what-is-this-mean-name-icontains-and-description-icontains-in-django-co
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(user__first_name__icontains=query) |
+            Q(user__last_name__icontains=query)
+            ).distinct()
+    # show 8 contacts per page
+    paginator = Paginator(queryset_list, 8)
+    page_request_var = 'page'
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.get_page(page)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver first page.
+        queryset = paginator.get_page(1)
+    except EmptyPage:
+        # if page is out of range (e.g. 9999), deliver last page of results
+        queryset = paginator.get_page(paginator.num_pages)
+
+    context = {
+        "object_list": queryset,
+        "title": "List",
+        "page_request_var": page_request_var,
+        "today": today,
+    }
+    return render(request, 'blog/post_list.html', context)
 
 
-def create_tag_data(posts):
-    tag_data = []
-    count = {}
-    for post in posts:
-        tags = re.split(" ", post.tags)
-    for tag in tags:
-        if tag not in count:
-            count[tag] = 1
-        else:
-            count[tag] += 1
-    # for tag, count in sorted(count.items(), key=lambda tag: Post.tags):
-    #     tag_data.append({'tag': tag,
-    #                     'count': count, })
-    return tag_data
+def post_update(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(BlogPost, slug=slug)
+    form = PostForm(request.POST or None,
+                    request.FILES or None,
+                    instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request,
+                         "<a href='#'>Item</a> Saved",
+                         extra_tags='html_safe')
+        return HttpResponseRedirect(instance.get_absolute_url())
+
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "form": form,
+    }
+    return render('blog/post_form.html', context)
 
 
-def init():
-    posts = Post.objects.all()
-    tag_data = create_tag_data(posts)
-    archieve_data = create_archieve_data(posts)
-    pagedata = {'version': '0.0.1',
-                'post_list': posts,
-                'tag_counts': tag_data,
-                'archieve_counts': archieve_data, }
-    return posts, pagedata
+def post_delete(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(BlogPost, slug=slug)
+    instance.delete()
+    messages.success(redirect, "Successfully deleted")
+    return redirect("blog:list")
 
 
-def create_archieve_data(posts):
-    archieve_data = []
-    count = {}
-    mcount = {}
-    for post in posts:
-        year = post.date_created.year
-        month = post.date_created.month
-        if year not in count:
-            count[year] = 1
-            mcount[year] = {}
-        else:
-            count[year] += 1
-        if month not in mcount[year]:
-            mcount[year][month] = 1
-        else:
-            mcount[year][month] += 1
-    for year in sorted(count.items(), reverse=True):
-        archieve_data.append({'isyear': True,
-                              'year': year,
-                              'count': count[year], })
-        for month in sorted(mcount[year].items(), reverse=True):
-            archieve_data.append({'isyear': False,
-                                  'yearmonth': '%d/%02d' % (year, month),
-                                  'monthname': MONTH_NAMES[month],
-                                  'count': mcount[year][month], })
-    return archieve_data
+def post_list_view(request):
+    posts = BlogPost.published.all()
+    return render(request, 'blog/postlist.html', {'posts': posts})
+
+
+def post_detail_view(request, year, month, day, post):
+    post = get_object_or_404(BlogPost,
+                             slug=post,
+                             status='published',
+                             publish__year=year,
+                             publish__month=month,
+                             publish__day=day)
+    return render(request, 'blog/details.html', {'post': post})
