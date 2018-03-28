@@ -1,4 +1,6 @@
 import os
+import dj_database_url
+
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
@@ -6,9 +8,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
 
 SECRET_KEY = 'us5knyh+m1r0=3(@w@j(0*g04^&hn%vis03w#7)=7)r3ny4w*h'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 
 INSTALLED_APPS = [
@@ -65,8 +67,12 @@ WSGI_APPLICATION = 'mainapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'dbblog.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'completeapp',
+        'USER': 'admin',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -147,3 +153,6 @@ CONFIG_DEFAULTS = {
     # Panel options
     'SQL_WARNING_THRESHOLD': 100,   # milliseconds
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
