@@ -27,7 +27,7 @@ urlpatterns = [
     path('', login_redirect, name='login_redirect'),
     path('foreignkey/', include('foreignkey.urls')),
     path('blog/', include('blog.urls', namespace='blog')),
-    re_path('api/blog/', include('blog.api.urls', namespace='blog_api')),
+    # re_path('api/blog/', include('blog.api.urls', namespace='blog_api')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
