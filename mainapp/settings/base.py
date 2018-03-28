@@ -8,7 +8,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
                            os.path.abspath(__file__))))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-SECRET_KEY = 'us5knyh+m1r0=3(@w@j(0*g04^&hn%vis03w#7)=7)r3ny4w*h'
+# SECRET_KEY = 'us5knyh+m1r0=3(@w@j(0*g04^&hn%vis03w#7)=7)r3ny4w*h'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'us5knyh+m1r0=3(@w@j(0*g04^&hn%vis03w#7)=7)r3ny4w*h')
 
 DEBUG = True
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,7 +44,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     # 'mainapp.middleware.LoginRequiredMiddleware',
 ]
