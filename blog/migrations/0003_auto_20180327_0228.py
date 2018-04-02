@@ -6,7 +6,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 from django.utils.timezone import utc
 import django.utils.timezone
-import datetime
+
 
 class Migration(migrations.Migration):
 
