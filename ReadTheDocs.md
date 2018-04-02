@@ -6,6 +6,11 @@ Python 3.5
 
 Django 2.0
 
+## Environment
+
+- https://jcutrer.com/howto/dev/python/pipenv-pipfile
+- https://robots.thoughtbot.com/how-to-manage-your-python-projects-with-pipenv
+
 ## Setting file
 
 - https://medium.com/@ayarshabeer/django-best-practice-settings-file-for-multiple-environments-6d71c6966ee2

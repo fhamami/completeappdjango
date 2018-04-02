@@ -1,5 +1,5 @@
 import os
-import dj_database_url
+# import dj_database_url
 import django_heroku
 
 
@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'nameless-hollows-86757.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
