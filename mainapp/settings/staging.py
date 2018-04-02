@@ -1,12 +1,12 @@
 import os
-import dj_database_url
+# import dj_database_url
 import django_heroku
 
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
                            os.path.abspath(__file__))))
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # SECRET_KEY = '
 # us5knyh+m1r0=3(@w@j(0*g04^&hn%vis03w#7)=7)r3ny4w*h
@@ -161,7 +161,7 @@ CONFIG_DEFAULTS = {
 }
 
 # Change 'default' database configuration with $DATABASE_URL.
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+# DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
