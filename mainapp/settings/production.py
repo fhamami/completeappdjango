@@ -1,7 +1,7 @@
 import os
 import django_heroku
-# import psycopg2
-# import dj_database_url
+import psycopg2
+import dj_database_url
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
@@ -70,10 +70,10 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-# DATABASE_URL = os.environ['DATABASE_URL']
-# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -3,3 +3,7 @@
 requirements.txt
 
 wiki/
+#accounts/migrations
+#blog/migrations
+#foreignkey/migrations
+#homepage/migrations
