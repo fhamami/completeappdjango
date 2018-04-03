@@ -9,11 +9,11 @@ def post_list_view(request):
     paginator = Paginator(list_objects, 3)
     page = request.GET.get('page')
     try:
-        posts = paginator.page(page)
+        posts = paginator.get_page(page)
     except PageNotAnInteger:
-        posts = paginator.page(1)
+        posts = paginator.get_page(1)
     except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
+        posts = paginator.get_page(paginator.num_pages)
     return render(request, 'blog/postlist.html', {'posts': posts})
 
 

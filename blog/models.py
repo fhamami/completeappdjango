@@ -36,12 +36,12 @@ class BlogPost(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               default='draft')
-    # image = models.ImageField(upload_to=upload_location,
-    #                           null=True,
-    #                           blank=True,
-    #                           width_field="width_field",
-    #                           height_field="height_field")
-    # tags = models.CharField(max_length=50)
+    image = models.ImageField(upload_to=upload_location,
+                              null=True,
+                              blank=True,
+                              width_field="width_field",
+                              height_field="height_field")
+    tags = models.CharField(max_length=50)
 
     objects = models.Manager()
 

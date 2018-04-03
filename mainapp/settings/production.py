@@ -62,8 +62,12 @@ WSGI_APPLICATION = 'mainapp.wsgi.application'
 DATABASES = {
     # 'default': dj_database_url.config()
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'datab.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'compapp_db',
+        'USER': 'compapp',
+        'PASSWORD': 'hmmm000',
+        'HOST': '172.17.0.1',
+        'PORT': '5432',
     }
 }
 # DATABASE_URL = os.environ['DATABASE_URL']
