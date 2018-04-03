@@ -1,7 +1,5 @@
 import os
 import django_heroku
-# import psycopg2
-# import dj_database_url
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
@@ -57,10 +55,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mainapp.wsgi.application'
 
-# DATABASE_URL= postgres://brxugwupkjrrfj:3abcea69b15b723f055c886af13846175a3dda66b7716285b6c761dbd7b1d4b1@ec2-23-21-121-220.compute-1.amazonaws.com:5432/d6e1snktv37p8k
-
 DATABASES = {
-    # 'default': dj_database_url.config()
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'compapp_db',
