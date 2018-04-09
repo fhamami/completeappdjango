@@ -2,8 +2,9 @@
 *.sqlite3
 requirements.txt
 
+bin/
 wiki/
-#accounts/migrations
-#blog/migrations
-#foreignkey/migrations
-#homepage/migrations
+accounts/migrations
+blog/migrations
+foreignkey/migrations
+homepage/migrations
